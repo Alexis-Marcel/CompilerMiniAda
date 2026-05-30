@@ -58,6 +58,14 @@ public final class Main {
             }
             System.out.println("🔍 " + colorize("STARTING PARSING PHASE", new AnsiFormat(Attribute.WHITE_TEXT(), Attribute.BLUE_BACK(), Attribute.BOLD())));
             ProgramNode AST = parser.parse();
+            if (args.length > 1 && "-json".equals(args[1])) {
+                if (errorService.hasNoErrors()) {
+                    AST.setIsJson(true);
+                    System.out.println("@@AST_JSON@@" + AST.toString());
+                }
+                errorService.handleErrorsDisplay();
+                return;
+            }
             if (errorService.hasNoErrors()) {
                 AnsiFormat fWarning = new AnsiFormat(Attribute.WHITE_TEXT(), Attribute.GREEN_BACK(), Attribute.BOLD());
                 System.out.println("\n✅ " + colorize("PARSING PHASE COMPLETED, GENERATING AST", fWarning));
